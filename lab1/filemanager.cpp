@@ -8,11 +8,13 @@ FileManager::FileManager(ILoger* lg)
 
 void FileManager::addFile(const QString path)
 {
-
     for(File* file : trackFiles){
         QDir dir(file->getPath()), temp_dir(path);
         if(dir.absolutePath() == temp_dir.absolutePath()){
-            qWarning("File already exists");
+            if(loger)
+                loger->Write(QString(QString("File with path: ") + file->getPath()) + QString(" already exists"));
+            else
+                qWarning("Logger not initialized");
             return;
         }
     }
@@ -20,7 +22,7 @@ void FileManager::addFile(const QString path)
     File* f = new File(path);
 
     if(loger)
-        loger->Write(f->getPath() + QString(" added"));
+        loger->Write(QString("File with path: ") + f->getPath() + QString(" added"));
     else
         qWarning("Logger not initialized");
 
@@ -36,12 +38,12 @@ void FileManager::FileState()
     {
         QString info = "";
         if(f->getExists()) {
-            info += (f->getPath() + QString(" exists "));
+            info += (QString("File with path: ") + f->getPath() + QString(" exists "));
             QString tempsize;
             tempsize.setNum(f->getSize());
-            info += (QString("size " + tempsize + " "));
+            info += (QString("size " + tempsize + " b"));
         }else{
-            info = f->getPath() + QString(" not exists ");
+            info = QString("File with path: ") + f->getPath() + QString(" not exists ");
         }
         if(loger)
             loger->Write(info);
@@ -60,12 +62,12 @@ void FileManager::filechange(File* f)
 {
     QString info = "";
     if(f->getExists()) {
-        info += (f->getPath() + QString(" exists "));
+        info += (QString("File with path: ") + f->getPath() + QString(" exists "));
         QString tempsize;
         tempsize.setNum(f->getSize());
-        info += (QString("size " + tempsize + " "));
+        info += (QString("size " + tempsize + " b"));
     }else{
-        info = f->getPath() + QString(" deleted");
+        info = QString("File with path: ") + f->getPath() + QString(" deleted");
     }
     if(loger)
         loger->Write(info);

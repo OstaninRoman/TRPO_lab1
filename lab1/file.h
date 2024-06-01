@@ -16,7 +16,7 @@ public:
     void updateState();
     bool getExists(){return exists;}
     int getSize(){return size;}
-    QString getPath(){return path;}
+    QString getPath() const {return path;}
 signals:
     void change(File*);
 };
