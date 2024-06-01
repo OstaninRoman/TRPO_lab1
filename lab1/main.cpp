@@ -7,13 +7,11 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    ILoger* l = new ConsoleLoger;
+    ILoger* l = nullptr;
 
-    Q_ASSERT_X(l != nullptr, " input method", "Logger not initilize");
-    if(l == nullptr)
-        qWarning("Loger not initilize");
+    Q_ASSERT_X(l != nullptr, "main.cpp", "Logger not initilize");
 
-    std::cout << "Input file(s) path(s) " << std::endl;
+    std::cout << "Enter file(s) path(s), then enter end " << std::endl;
     QTextStream in(stdin);
     QVector<QString> paths;
     QString str;
