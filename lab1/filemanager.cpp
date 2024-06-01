@@ -10,7 +10,8 @@ void FileManager::addFile(const QString path)
 {
 
     for(File* file : trackFiles){
-        if(file->getPath() == path){
+        QDir dir(file->getPath()), temp_dir(path);
+        if(dir.absolutePath() == temp_dir.absolutePath()){
             qWarning("File already exists");
             return;
         }
@@ -44,6 +45,8 @@ void FileManager::FileState()
         }
         if(loger)
             loger->Write(info);
+        else
+            qWarning("Logger not initialized");
     }
 }
 
@@ -66,4 +69,14 @@ void FileManager::filechange(File* f)
     }
     if(loger)
         loger->Write(info);
+    else
+        qWarning("Logger not initialized");
+}
+
+FileManager::~FileManager()
+{
+    for(File* file : trackFiles){
+        delete file;
+        file = nullptr;
+    }
 }

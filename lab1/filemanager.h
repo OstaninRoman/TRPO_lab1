@@ -2,6 +2,7 @@
 #define FILEMANAGER_H
 #include "file.h"
 #include "consoleloger.h"
+#include <QDir>
 
 class FileManager:public QObject
 {
@@ -11,6 +12,7 @@ private:
     ILoger* loger;
 
     FileManager(ILoger*);
+    ~FileManager();
 public:
     static FileManager& Instance(ILoger* lg){
         static FileManager fm(lg);
