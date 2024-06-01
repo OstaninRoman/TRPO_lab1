@@ -67,7 +67,7 @@ void FileManager::filechange(File* f)
         tempsize.setNum(f->getSize());
         info += (QString("size " + tempsize + " b"));
     }else{
-        info = QString("File with path: ") + f->getPath() + QString(" deleted");
+        info = QString("File with path: ") + f->getPath() + QString(" not exist");
     }
     if(loger)
         loger->Write(info);
