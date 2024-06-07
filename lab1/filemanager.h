@@ -13,12 +13,15 @@ private:
 
     FileManager(ILoger*);
     ~FileManager();
+    FileManager(const FileManager&);
+    FileManager& operator=(const FileManager&);
 public:
     static FileManager& Instance(ILoger* lg){
         static FileManager fm(lg);
         return fm;
     }
     void addFile(const QString);
+    void deleteFile(const QString);
     void FileState();
     void updateFileState();
 public slots:
