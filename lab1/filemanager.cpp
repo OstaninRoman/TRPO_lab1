@@ -32,10 +32,20 @@ void FileManager::addFile(const QString path)
     }
 }
 
+void FileManager::deleteFile(const QString path)
+{
+    File** f = trackFiles.begin();
+    while(f != trackFiles.end()){
+        if((*f)->getPath() == path){
+            trackFiles.erase(f);
+            break;
+        }
+    }
+}
+
 void FileManager::FileState()
 {
-    for(File* f : trackFiles)
-    {
+    for(File* f : trackFiles){
         QString info = "";
         if(f->getExists()) {
             info += (QString("File with path: ") + f->getPath() + QString(" exists "));
