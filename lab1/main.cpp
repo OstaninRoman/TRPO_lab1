@@ -7,7 +7,7 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    ILoger* l = nullptr;
+    ILoger* l = new ConsoleLoger;
 
     Q_ASSERT_X(l != nullptr, "main.cpp", "Logger not initilize");
     if(l == nullptr)
