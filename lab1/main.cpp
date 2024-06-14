@@ -7,7 +7,11 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+<<<<<<< HEAD
     ILoger* l = new ConsoleLoger;
+=======
+    ILoger* l = new(std::nothrow) ConsoleLoger;
+>>>>>>> develop
 
     Q_ASSERT_X(l != nullptr, "main.cpp", "Logger not initilize");
     if(l == nullptr)
@@ -24,15 +28,15 @@ int main(int argc, char *argv[])
     if(!paths.isEmpty())
         paths.removeLast();
 
-    FileManager::Instance(l);
+    FileManager& instance = FileManager::Instance(l);
 
     for(QString path : paths)
-        FileManager::Instance(l).addFile(path);
+        instance.addFile(path);
 
-    FileManager::Instance(l).FileState();
+    instance.FileState();
 
     while(true){
-        FileManager::Instance(l).updateFileState();
+        instance.updateFileState();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
