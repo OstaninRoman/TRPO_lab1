@@ -12,17 +12,17 @@ void FileManager::addFile(const QString path)
         QDir dir(file->getPath()), temp_dir(path);
         if(dir.absolutePath() == temp_dir.absolutePath()){
             if(loger)
-                loger->Write(QString(QString("File with path: ") + file->getPath()) + QString(" already exists"));
+                loger->Write(QString("File with path: ") + file->getPath() + QString(" already exists"));
             else
                 qWarning("Logger not initialized");
             return;
         }
     }
 
-    File* f = new File(path);
+    File* f = new(std::nothrow) File(path);
 
     if(loger)
-        loger->Write(QString("File with path: ") + f->getPath() + QString(" added"));
+        loger->Write(QString("File added"));
     else
         qWarning("Logger not initialized");
 
@@ -30,17 +30,17 @@ void FileManager::addFile(const QString path)
         connect(f, &File::change, this, &FileManager::filechange);
         trackFiles.push_back(f);
     }
+    else
+        qWarning("new didn't allocate memory, f = nullptr");
 }
 
 void FileManager::deleteFile(const QString path)
 {
-    File** f = trackFiles.begin();
-    while(f != trackFiles.end()){
+    for(QVector<File*>::iterator f=trackFiles.begin();f!=trackFiles.end();f++)
         if((*f)->getPath() == path){
             trackFiles.erase(f);
             break;
         }
-    }
 }
 
 void FileManager::FileState()
@@ -51,7 +51,7 @@ void FileManager::FileState()
             info += (QString("File with path: ") + f->getPath() + QString(" exists "));
             QString tempsize;
             tempsize.setNum(f->getSize());
-            info += (QString("size " + tempsize + " b"));
+            info += (QString("size " + tempsize));
         }else{
             info = QString("File with path: ") + f->getPath() + QString(" not exists ");
         }
@@ -75,7 +75,7 @@ void FileManager::filechange(File* f)
         info += (QString("File with path: ") + f->getPath() + QString(" exists "));
         QString tempsize;
         tempsize.setNum(f->getSize());
-        info += (QString("size " + tempsize + " b"));
+        info += (QString("size " + tempsize));
     }else{
         info = QString("File with path: ") + f->getPath() + QString(" not exist");
     }
